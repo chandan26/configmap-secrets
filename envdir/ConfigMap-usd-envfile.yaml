@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  INTERVAL: "5"
+  LESSON: ConfigMap-LAB
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: cm-env-file
