@@ -1,0 +1,10 @@
+  170  cd envdir/
+  171  kubectl create cm cm-env-file --from-env-file=$HOME/k8self-paced/envdir/envfile --dry-run=client -o yaml >> ConfigMap-usd-envfile.yaml
+  172  ls -lrth
+  173  cd ..
+  174  git add envdir/
+  175  git commit -m "Configmap creation using a environment file"
+  176  git push -u origin main
+  177  history 
+  178  cd envdir/
+  179  history | tail -n 10 >>cli-history-forenv-ConfigMapfile.txt
