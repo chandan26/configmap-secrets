@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  app-basic.properties: |
+    system.type="TESTING CONFIGMAP"
+    system.number=12345
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: app-basic-configmap
