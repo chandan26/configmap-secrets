@@ -1,0 +1,143 @@
+    1  cd
+    2  vi /etc/ssh/sshd_config 
+    3  passwd
+    4  systemctl restart sshd
+    5  sudo yum install -y yum-utils
+    6   sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    7  sudo yum install docker-ce docker-ce-cli containerd.io -y
+    8   systemctl enable docker
+    9  rpm -qa | grep docker
+   10  sudo yum install -y yum-utils
+   11  systemctl enable docker
+   12  systemctl start docker
+   13  cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+   14  [kubernetes]
+   15  name=Kubernetes
+   16  baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+   17  enabled=1
+   18  gpgcheck=1
+   19  repo_gpgcheck=1
+   20  gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+   21  exclude=kubelet kubeadm kubectl
+   22  EOF
+   23  sudo setenforce 0
+   24  sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+   25  yum install -y kubelet-1.20.0-0 kubeadm-1.20.0-0 kubectl-1.20.0-0  --disableexcludes=kubernetes
+   26   systemctl enable kubelet
+   27  systemctl start kubelet
+   28  ip addr
+   29  kubeadm init --apiserver-advertise-address=10.190.0.2 --pod-network-cidr=192.168.0.0/16
+   30   mkdir -p $HOME/.kube
+   31  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+   32  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+   33  kubectl get nodes
+   34   kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+   35  kubectl get nodes
+   36  kubectl get nodes -o wide
+   37  ssh-keygen -t rsa
+   38  ssh-copy-id root@10.160.0.2
+   39  ssh 10.160.0.2
+   40  ssh-copy-id root@10.160.0.3
+   41  ssh-copy-id root@34.93.254.48
+   42  ssh-copy-id root@34.126.218.216
+   43  ssh 34.126.218.216
+   44  ssh 10.160.0.2
+   45  kubectl get po
+   46  kubectl get no
+   47  yum install bash-completion bash-completion-extras
+   48  locate bash_completion.sh
+   49  source /etc/profile.d/bash_completion.sh  
+   50  echo 'source <(kubectl completion bash)' >>~/.bashrc
+   51  kubectl completion bash >/etc/bash_completion.d/kubectl
+   52  echo 'alias k=kubectl' >>~/.bashrc
+   53  echo 'complete -F __start_kubectl k' >>~/.bashrc
+   54  source /usr/share/bash-completion/bash_completion
+   55  curl     -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completion/bash/docker-compose     -o /etc/bash_completion.d/docker-compose
+   56  exit
+   57  mkdir k8'sself-paced
+   58  mkdir k8self-paced
+   59  ls -lrth
+   60  cd k8self-paced/
+   61  ls -lrth
+   62  vi configmap-sample1.yaml
+   63  cat configmap-sample1.yaml 
+   64  kubectl create cm cm1 --from-literal=LESSON=configmapKuber --from-literal=INTERVAL=4 --dry-run =client -o yaml >cm1.yaml
+   65  kubectl create configmap -h
+   66  kubectl create cm cm1 --from-literal=LESSON=configmapKuber --from-literal=INTERVAL=4 --dry-run =client -o yaml > cm1.yaml
+   67  kubectl create configmap cm1 --from-literal=LESSON=configmapKuber --from-literal=INTERVAL=4 --dry-run =client -o yaml > cm1.yaml
+   68  kubectl create configmap cm1 --from-literal=LESSON=configmapKuber --from-literal=INTERVAL=4 --dry-run=client -o yaml > cm1.yaml
+   69  ls -lthr
+   70  cat cm1.yaml 
+   71  kubectl create -f cm1.yaml 
+   72  kubectl get cm
+   73  k delete cm --all
+   74  kubectl create -f cm1.yaml 
+   75  kubectl get cm
+   76  kubectl describe cm cm1
+   77  echo "configmapKuber" >>LESSON
+   78  echo "4" >>INTERVAL
+   79  ls -lrth
+   80  ls -lth
+   81  cd k8self-paced/
+   82  ls -lrth
+   83  pwd
+   84  kubectl create cm cm-from-file --from--file=INTERVAL=$HOME/k8self-paced/INTERVAL --from-file=LESSON=$HOME/k8self-paced/LESSON --dry-run=client -o yaml> cm-from-file.yaml
+   85  kubectl create cm cm-from-file --from-file=INTERVAL=$HOME/k8self-paced/INTERVAL --from-file=LESSON=$HOME/k8self-paced/LESSON --dry-run=client -o yaml> cm-from-file.yaml
+   86  ls -lrth
+   87  cat cm-from-file.yaml 
+   88  k create -f cm-from-file.yaml 
+   89  k get cm
+   90  k describe cm-from-file
+   91  kubectl describe cm cm-from-file
+   92  ls -lrth
+   93  mkdir /root/configmaptest
+   94  mv LESSON INTERVAL /root/configmaptest/
+   95  ls -lrth
+   96  cd /root/configmaptest/
+   97  ls -lrth
+   98  kubectl create cm cm-from-file  --from-file=LESSON=$HOME/k8self-paced/ --dry-run=client -o yaml> cm-frm-dir-all-files.yaml
+   99  cd ..
+  100  kubectl create cm cm-from-file  --from-file=LESSON=$HOME/k8self-paced/ --dry-run=client -o yaml> cm-frm-dir-all-files.yaml
+  101  kubectl create cm cm-from-file  --from-file=LESSON=$HOME/configmaptest --dry-run=client -o yaml> cm-frm-dir-all-files.yaml
+  102  cd /root/configmaptest/
+  103  ll
+  104  cat cm-frm-dir-all-files.yaml 
+  105  rm cm-frm-dir-all-files.yaml 
+  106  kubectl create cm cm-from-file  --from-file=LESSON=$HOME/configmaptest -o yaml> cm-frm-dir-all-files.yaml
+  107  cd
+  108  kubectl create cm cm-from-file  --from-file=LESSON=$HOME/configmaptest -o yaml> cm-frm-dir-all-files.yaml
+  109  cd configmaptest/
+  110  mkdir files
+  111  mv LESSON INTERVAL files/
+  112  cd files/
+  113  ls -lrth
+  114  pwd
+  115  kubectl create cm cm-from-file  --from-file=LESSON=$HOME/configmaptest/files -o yaml> cm-frm-dir-all-files.yaml
+  116  kubectl create cm cm-from-file  --from-file=$HOME/configmaptest/files -o yaml> cm-frm-dir-all-files.yaml
+  117  ls -lrth
+  118  rm -rf cm-frm-dir-all-files.yaml 
+  119  kubectl create cm cm-from-file  --from-file=$HOME/configmaptest/files -o yaml> cm-frm-dir-all-files.yaml
+  120  ls -lrth
+  121  rm -rf cm-frm-dir-all-files.yaml 
+  122  cd 
+  123  kubectl create cm cm-from-file  --from-file=$HOME/configmaptest/files -o yaml> cm-frm-dir-all-files.yaml
+  124  ls -lrth
+  125  rm -ef cm-frm-dir-all-files.yaml 
+  126  rm -rf cm-frm-dir-all-files.yaml 
+  127  kubectl create cm cm-from-dir-file  --from-file=$HOME/configmaptest/files -o yaml> cm-frm-dir-all-files.yaml
+  128  ls -lrth
+  129  cat cm-frm-dir-all-files.yaml 
+  130  kubectl create -f cm-frm-dir-all-files.yaml 
+  131  kubectl create cm cm-from-dir-file-nokey  --from-file=$HOME/configmaptest/files --dry-run=client -o yaml> cm-frm-dir-all-files-no-key-run.yaml
+  132  ls -lrth
+  133  kubectl get cm
+  134  yum install git -y
+  135  mls -lrth
+  136  ls -lrth
+  137  mv cm-frm-dir-all-files-no-key-run.yaml /root/k8self-paced/
+  138  cd k8self-paced/
+  139  ls -lrth
+  140  git add .
+  141  git init
+  142  git add .
+  143  history > clihist-configmap.txt
