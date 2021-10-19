@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  password: OTg3NjU0MzIxIUA=
+  username: cm9vdA==
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: generic-secret-from-ltrl

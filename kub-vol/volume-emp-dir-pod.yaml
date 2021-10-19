@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-pod-dir
+spec:
+  containers:
+    - name: pod1
+      image: centos
+    - name: pod2
+      image: centos
+
